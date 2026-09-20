@@ -1,0 +1,30 @@
+# Replace client_id after creating the app in the Shopify Dev Dashboard.
+# Keep scopes in sync with SHOPIFY_API_SCOPES in web/.env.
+
+client_id = ""
+name = "Next.js Shopify App"
+application_url = "https://localhost"
+embedded = true
+
+[webhooks]
+api_version = "2026-01"
+
+[[webhooks.subscriptions]]
+topics = ["app/uninstalled", "shop/update"]
+uri = "/api/webhooks"
+compliance_topics = [
+  "customers/data_request",
+  "customers/redact",
+  "shop/redact",
+]
+
+[access_scopes]
+scopes = "read_products"
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = ["https://localhost/"]
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true

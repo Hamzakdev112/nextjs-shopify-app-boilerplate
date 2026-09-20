@@ -1,0 +1,16 @@
+{
+  "name": "shopify-nextjs-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "shopify app dev -c dev",
+    "web:dev": "npm --prefix web run dev",
+    "web:build": "npm --prefix web run build",
+    "web:start": "npm --prefix web run start",
+    "worker": "npm --prefix web run worker",
+    "deploy:dev": "shopify app deploy -c dev",
+    "deploy:prod": "shopify app deploy -c prod",
+    "deploy:staging": "shopify app deploy -c staging",
+    "generate": "shopify app generate"
+  }
+}
