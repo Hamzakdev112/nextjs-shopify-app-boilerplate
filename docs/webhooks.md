@@ -49,11 +49,11 @@ Processors should be safe to run twice (update-by-domain, not “insert once”)
 
 ## Local delivery
 
-`shopify app dev` rewrites the subscription URI to the tunnel. Keep Redis and the worker running or jobs will sit in the queue.
+Point webhooks at your reserved ngrok origin (see [setup.md](setup.md)). Keep Redis running or jobs will sit in the queue.
 
 ```bash
 docker compose up -d
-npm run dev
+npm run dev -- --tunnel-url=https://your-name.ngrok-free.dev:3000
 ```
 
 `web:dev` is the custom server. With `WORKER_MODE=true` in `web/.env`, that process also starts the workers.

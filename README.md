@@ -37,7 +37,7 @@ cp .env.example .env
 ```
 SHOPIFY_API_KEY=          # same as client_id
 SHOPIFY_API_SECRET=
-SHOPIFY_APP_URL=          # CLI will rewrite this in `shopify app dev`
+SHOPIFY_APP_URL=          # reserved ngrok origin, e.g. https://your-name.ngrok-free.dev
 SHOPIFY_API_SCOPES=read_products
 DATABASE_URL="file:./dev.db"
 REDIS_URL=redis://127.0.0.1:6379
@@ -61,11 +61,14 @@ docker compose up -d
 cd web && npx prisma db push
 ```
 
-6. From the repo root:
+6. From the repo root, start ngrok on a **reserved domain** (the URL stays the same across runs — Shopify’s default tunnel does not), then:
 
 ```bash
-npm run dev
+ngrok http --url=https://your-name.ngrok-free.dev 3000
+npm run dev -- --tunnel-url=https://your-name.ngrok-free.dev:3000
 ```
+
+See [docs/setup.md](docs/setup.md).
 
 - Merchants: open the app from the development store’s **Apps** menu.
 - Staff: `cd web && npm run db:seed`, then open `/admin` in a normal tab. [docs/admin.md](docs/admin.md).
@@ -74,7 +77,7 @@ npm run dev
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | `shopify app dev` (tunnel + Next + worker) |
+| `npm run dev` | `shopify app dev -c dev` (pass `--tunnel-url` for ngrok) |
 | `npm run web:dev` | Custom server (`server.js`), workers if `WORKER_MODE=true` |
 | `npm run worker` | Workers only |
 | `npm run web:build` / `web:start` | Production custom server |

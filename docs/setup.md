@@ -14,6 +14,27 @@ Then set `client_id` to the app’s client ID from the [Shopify Dev Dashboard](h
 
 The same pattern applies later for `shopify.app.prod.toml` / `shopify.app.staging.toml` if you add those configs.
 
+## Tunnel (ngrok)
+
+Use a **reserved ngrok domain**, not the Cloudflare tunnel Shopify CLI starts by default.
+
+That default hostname changes every `shopify app dev`. Then App Bridge, `SHOPIFY_APP_URL`, redirect URLs, and webhook URIs all have to be rewritten. A reserved ngrok URL does not change, so the Dev Dashboard, `shopify.app.dev.toml`, and `web/.env` stay pointed at the same origin.
+
+1. Reserve a domain in the [ngrok dashboard](https://dashboard.ngrok.com/).
+2. Tunnel to the Shopify CLI proxy (port `3000` unless you overrode it):
+
+```bash
+ngrok http --url=https://your-name.ngrok-free.dev 3000
+```
+
+3. Point Shopify CLI at that origin:
+
+```bash
+npm run dev -- --tunnel-url=https://your-name.ngrok-free.dev:3000
+```
+
+Set `SHOPIFY_APP_URL` in `web/.env` to the same `https://…` origin (no port).
+
 ## First run
 
 ```bash
@@ -32,8 +53,8 @@ docker compose up -d
 cd web && npx prisma db push
 ```
 
-From the repo root:
+From the repo root (ngrok already running on the reserved domain):
 
 ```bash
-npm run dev
+npm run dev -- --tunnel-url=https://your-name.ngrok-free.dev:3000
 ```
